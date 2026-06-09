@@ -1,0 +1,10 @@
+LOAD MQ
+LOAD MQ,M(2) 
+STOR M(4)
+LOAD M(8)
+LOAD -M(3) 
+LOAD |M(16)| 
+LOAD -|M(9)| 
+JUMP+ M(6,20:39)  
+SUB |M(3)|
+STOR M(1,8:19)
