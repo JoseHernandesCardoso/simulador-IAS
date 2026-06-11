@@ -1,6 +1,9 @@
 #include "instructions.h"
+#include "../components/memory.h"
 #include <stdlib.h>
+#include <ctype.h>
 #include <string.h>
+#include <stdio.h>
 
 
 static InstructionData instructions[] = {
@@ -11,7 +14,7 @@ static InstructionData instructions[] = {
     {"LOAD", 9ULL, 1, "MQ,M(", ")"},
     {"LOAD", 10ULL, 1, "MQ", NULL},
     {"STOR", 18ULL, 1, "M(", ",8:19)"},
-    {"STOR", 19ULL, 1, "M(", ",28:39)"},
+    {"STOR", 19ULL, 1, "M(", ",20:39)"},
     {"STOR", 33ULL, 1, "M(", ")"},
     {"JUMP", 13ULL, 1, "M(", ",0:19)"},
     {"JUMP", 14ULL, 1, "M(", ",20:39)"},
@@ -27,16 +30,51 @@ static InstructionData instructions[] = {
     {"RSH", 21ULL, 0 , NULL, NULL}
 };
 
+/**
+ * Copia STRING para OUT até seu primeiro número.
+ * Requer que OUT tenha espaço suficiente para a cópia.
+ * Se STRING é NULL, OUT também será NULL.
+ * O usuário fica responsável por dar free() em OUT.
+ */
+static void cpy_until_number(char *string, char **out) {
+    size_t len;
+    int finish, i;
+
+    if (string == NULL) {
+        *out = NULL;
+    }
+    else {
+        *out = calloc(sizeof(char), sizeof(string));
+        len = strlen(string);
+        finish = 0; i = 0;
+
+        while (i < len && !finish) {
+            if (!isdigit(string[i])) {
+                (*out)[i] = string[i];
+            } else {
+                finish = 1;
+            }
+            i++;
+        }
+    }
+}
+
 BinaryWord encode_instruction(char *instruction) {
     BinaryWord encoded, address;
     int tot_instructions, i, finish_enconding;
-    char *read_buffer, *addr_token, *mnem_token;
+    char *instr_token, *addr_token, *mnem_token;
+    char *read_buffer, *addr_sufix, *addr_prefix, *err_msg;
 
     tot_instructions = sizeof(instructions) / sizeof(InstructionData);
-    mnem_token = strtok(instruction, " ");
+
+    instr_token = malloc(sizeof(instruction));
+    strcpy(instr_token, instruction);
+    mnem_token = strtok(instr_token, " ");
     addr_token = strtok(NULL, " ");
+
     encoded = EMPTY_WORD;
     finish_enconding = 0;
+    err_msg = NULL;
 
     // Verifica mnemonico
     i = 0;
@@ -44,30 +82,61 @@ BinaryWord encode_instruction(char *instruction) {
         i++;
     }
 
+    if (i >= tot_instructions) {
+        err_msg = "ERRO DE SINTAXE! Instrução desconhecida!\n";
+    }
+
     // Verifica endereço
     while (i < tot_instructions && !strcmp(mnem_token, instructions[i].mnemonic) && !finish_enconding) {
-        read_buffer = addr_token;
-        if (read_buffer == NULL) {
-            if (!instructions[i].has_address) encoded = instructions[i].opcode << ADDRESS_SIZE;
-            finish_enconding = 1;
+        addr_prefix = instructions[i].address_prefix;
+        addr_sufix = instructions[i].address_sufix;
 
-        // Se o primeiro trecho da string for igual ao prefixo
-        } else if (strstr(read_buffer, instructions[i].address_prefix) == read_buffer) {
-            if (instructions[i].address_sufix == NULL) {
+        // Verifica instruções sem endereçamento
+        if (addr_token == NULL) {
+            if (!instructions[i].has_address) {
                 encoded = instructions[i].opcode << ADDRESS_SIZE;
-                finish_enconding = 1;
 
             } else {
-                read_buffer += strlen(instructions[i].address_prefix);
-                address = strtoll(read_buffer, &read_buffer, 10);
-                if (strstr(read_buffer, instructions[i].address_sufix) == read_buffer) {
-                    if (address != 0) encoded = (instructions[i].opcode << ADDRESS_SIZE) | address;
+                err_msg = "ERRO DE SINTAXE! Campo de endereço não encontrado!\n";
+                finish_enconding = 1;
+            }
+
+        // Se o primeiro trecho da string for igual ao prefixo do endereço
+        } else {
+            cpy_until_number(addr_token, &read_buffer);
+
+            if (!strcmp(read_buffer, addr_prefix)) {
+                free(read_buffer);
+                if (addr_sufix == NULL) {
+                    encoded = instructions[i].opcode << ADDRESS_SIZE;
                     finish_enconding = 1;
+                
+                } else {
+                    read_buffer = addr_token + strlen(addr_prefix);
+                    address = strtoll(read_buffer, &read_buffer, 10);
+
+                    if (address < INSTRUCTIONS_ADDRESS || address > MAX_MEMORY_SIZE - 1) {
+                        err_msg = "ERRO DE ACESSO A MEMÓRIA! Acesso a indice inválido da memória!\n";
+                        finish_enconding = 1;
+
+                    } else if (strstr(read_buffer, addr_sufix) == read_buffer && *(read_buffer + strlen(addr_sufix)) == '\0') {
+                        encoded = (instructions[i].opcode << ADDRESS_SIZE) | address;
+                        finish_enconding = 1;
+                    }
                 }
             }
         }
         i++;
-        }
+    }
+    
+    if (encoded == EMPTY_WORD && err_msg == NULL) {
+        err_msg = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!\n";
+    }
 
+    if (err_msg != NULL) {
+        printf("ERRO NA INSTRUÇÃO: %s\n%s\n", instruction, err_msg);
+    }
+    
+    free(instr_token);
     return encoded;
 }
