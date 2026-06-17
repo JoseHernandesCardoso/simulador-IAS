@@ -5,6 +5,7 @@
 #define MEMORY_H
 
 #define MAX_MEMORY_SIZE 1000
+#define DATA_ADDRESS 0
 #define INSTRUCTIONS_ADDRESS 100
 
 /**

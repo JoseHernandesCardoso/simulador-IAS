@@ -115,7 +115,7 @@ BinaryWord encode_instruction(char *instruction) {
                     read_buffer = addr_token + strlen(addr_prefix);
                     address = strtoll(read_buffer, &read_buffer, 10);
 
-                    if (address < INSTRUCTIONS_ADDRESS || address > MAX_MEMORY_SIZE - 1) {
+                    if (address < 0 || address > MAX_MEMORY_SIZE - 1) {
                         err_msg = "ERRO DE ACESSO A MEMÓRIA! Acesso a indice inválido da memória!\n";
                         finish_enconding = 1;
 
