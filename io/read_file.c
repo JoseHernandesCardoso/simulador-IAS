@@ -85,25 +85,24 @@ void read_code_file(char *file_name, Memory memory) {
     reading_data = 1;
     valid_line = read_next_line(line, file);
     while (!feof(file) && reading_data && !reading_error) {
-        if (is_numeric(line)) {
-            if (valid_line) {
-                memory[write_address] = strtoll(line, NULL, 10);
-                write_address++;
-            }
-        } else if (!strcmp(line, TEXT_FLAG)) {
+        if (!strcmp(line, TEXT_FLAG)) {
             reading_data = 0;
+        } else if (is_numeric(line) && valid_line) {
+            memory[write_address] = strtoll(line, NULL, 10);
+            write_address++;
         } else if (!blank_str(line)) {
             printf("ERRO DE DADOS! Apenas dados são permitidos na seção de dados!\n");
             reading_error = 1;
         }
+            
+        if (reading_data) valid_line = read_next_line(line, file);
 
         if (write_address >= INSTRUCTIONS_ADDRESS) {
             printf("ERRO DE DADOS! Limite de dados de entrada excedido!\n");
             reading_error = 1;
         }
-
-        valid_line = read_next_line(line, file);
     }
+
 
     // Lê instruções
     write_address = INSTRUCTIONS_ADDRESS;
