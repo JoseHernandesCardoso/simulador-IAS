@@ -67,46 +67,41 @@ static int blank_str(char *string) {
     
 }
 
-/**
- * Lê o arquivo de instruções e salva elas na memória.
- * Conteúdo precedido por "#" é considerado comentário e é ignorado.
- */
-void read_code_file(char *file_name, Memory memory) {
+
+void read_code_file(char *file_name, Memory memory, char **err) {
     FILE *file;
     char line[MAX_LINE_SIZE];
     BinaryWord inst1, inst2;
     int valid_line, reading_data;
-    int reading_error = 0;
     int write_address = DATA_ADDRESS;
 
     file = fopen(file_name, "r");
+    *err = NULL;
 
     // Lê Dados
     reading_data = 1;
     valid_line = read_next_line(line, file);
-    while (!feof(file) && reading_data && !reading_error) {
+    while (!feof(file) && reading_data && *err == NULL) {
         if (!strcmp(line, TEXT_FLAG)) {
             reading_data = 0;
         } else if (is_numeric(line) && valid_line) {
             memory[write_address] = strtoll(line, NULL, 10);
             write_address++;
         } else if (!blank_str(line)) {
-            printf("ERRO DE DADOS! Apenas dados são permitidos na seção de dados!\n");
-            reading_error = 1;
+            *err = "ERRO DE DADOS! Apenas dados são permitidos na seção de dados!\n";
         }
             
         if (reading_data) valid_line = read_next_line(line, file);
 
         if (write_address >= INSTRUCTIONS_ADDRESS) {
-            printf("ERRO DE DADOS! Limite de dados de entrada excedido!\n");
-            reading_error = 1;
+            *err = "ERRO DE DADOS! Limite de dados de entrada excedido!\n";
         }
     }
 
 
     // Lê instruções
     write_address = INSTRUCTIONS_ADDRESS;
-    while (!feof(file) && write_address < MAX_MEMORY_SIZE && !reading_error) {
+    while (!feof(file) && write_address < MAX_MEMORY_SIZE && *err == NULL) {
         valid_line = 0;
         while (!feof(file) && !valid_line) {
             if (read_next_line(line, file)) {
@@ -115,21 +110,23 @@ void read_code_file(char *file_name, Memory memory) {
         };
 
         if (valid_line) {
-            inst1 = encode_instruction(line);
+            inst1 = encode_instruction(line, err);
         }
 
-        valid_line = 0;
-        while (!feof(file) && !valid_line) {
-            if (read_next_line(line, file)) {
-                valid_line = 1;
-            }
-        };
+        if (*err == NULL) {
+            valid_line = 0;
+            while (!feof(file) && !valid_line) {
+                if (read_next_line(line, file)) {
+                    valid_line = 1;
+                }
+            };
 
-        if (valid_line) {
-            inst2 = encode_instruction(line);
-        }       
+            if (valid_line) {
+                inst2 = encode_instruction(line, err);
+            }       
 
-        memory[write_address] = (inst1 << INSTRUCTION_SIZE) | inst2;
-        write_address++;
+            memory[write_address] = (inst1 << INSTRUCTION_SIZE) | inst2;
+            write_address++;
+        }
     }
 }

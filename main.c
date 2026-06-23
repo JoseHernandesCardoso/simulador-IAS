@@ -3,7 +3,8 @@
 #include <stdio.h>
 
 void main() {
-    
+    char *error_msg;
+
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
     printf("           MEG6: SIMULADOR DO IAS           \n");
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
@@ -18,7 +19,9 @@ void main() {
     
 
     
-    read_code_file("teste.txt", mem);
+    read_code_file("teste.txt", mem, &error_msg);
+    if (error_msg != NULL) printf("%s\n", error_msg);
+    
     int i = INSTRUCTIONS_ADDRESS;
 
     for (int j=DATA_ADDRESS; j < 150; j++) printf("%lld ", mem[j]);

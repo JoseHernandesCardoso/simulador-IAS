@@ -59,11 +59,11 @@ static void cpy_until_number(char *string, char **out) {
     }
 }
 
-BinaryWord encode_instruction(char *instruction) {
+BinaryWord encode_instruction(char *instruction, char **err) {
     BinaryWord encoded, address;
     int tot_instructions, i, finish_enconding;
     char *instr_token, *addr_token, *mnem_token;
-    char *read_buffer, *addr_sufix, *addr_prefix, *err_msg;
+    char *read_buffer, *addr_sufix, *addr_prefix;
 
     tot_instructions = sizeof(instructions) / sizeof(InstructionData);
 
@@ -74,7 +74,7 @@ BinaryWord encode_instruction(char *instruction) {
 
     encoded = EMPTY_WORD;
     finish_enconding = 0;
-    err_msg = NULL;
+    *err = NULL;
 
     // Verifica mnemonico
     i = 0;
@@ -83,7 +83,7 @@ BinaryWord encode_instruction(char *instruction) {
     }
 
     if (i >= tot_instructions) {
-        err_msg = "ERRO DE SINTAXE! Instrução desconhecida!\n";
+        *err = "ERRO DE SINTAXE! Instrução desconhecida!\n";
     }
 
     // Verifica endereço
@@ -97,7 +97,7 @@ BinaryWord encode_instruction(char *instruction) {
                 encoded = instructions[i].opcode << ADDRESS_SIZE;
 
             } else {
-                err_msg = "ERRO DE SINTAXE! Campo de endereço não encontrado!\n";
+                *err = "ERRO DE SINTAXE! Campo de endereço não encontrado!\n";
                 finish_enconding = 1;
             }
 
@@ -116,7 +116,7 @@ BinaryWord encode_instruction(char *instruction) {
                     address = strtoll(read_buffer, &read_buffer, 10);
 
                     if (address < 0 || address > MAX_MEMORY_SIZE - 1) {
-                        err_msg = "ERRO DE ACESSO A MEMÓRIA! Acesso a indice inválido da memória!\n";
+                        *err = "ERRO DE ACESSO A MEMÓRIA! Acesso a indice inválido da memória!\n";
                         finish_enconding = 1;
 
                     } else if (strstr(read_buffer, addr_sufix) == read_buffer && *(read_buffer + strlen(addr_sufix)) == '\0') {
@@ -129,12 +129,8 @@ BinaryWord encode_instruction(char *instruction) {
         i++;
     }
     
-    if (encoded == EMPTY_WORD && err_msg == NULL) {
-        err_msg = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!\n";
-    }
-
-    if (err_msg != NULL) {
-        printf("ERRO NA INSTRUÇÃO: %s\n%s\n", instruction, err_msg);
+    if (encoded == EMPTY_WORD && *err == NULL) {
+        *err = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!\n";
     }
     
     free(instr_token);

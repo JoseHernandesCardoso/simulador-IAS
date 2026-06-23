@@ -26,8 +26,9 @@ typedef struct {
  *          <PREFIX><MEMORY_ADDRESS><SUFIX>
  * 
  * Onde <PREFIX> e <SUFIX> variam com o opcode da instrução.
- * Retorna EMPTY_WORD e exibe erro se INSTRUCTION for inválido.
+ * Retorna EMPTY_WORD e retorna mensagem de erro em ERR se INSTRUCTION for inválido.
+ * Caso contrário, ERR retorna NULL.
  */
-BinaryWord encode_instruction(char *instruction);
+BinaryWord encode_instruction(char *instruction, char **err);
 
 #endif
