@@ -3,6 +3,8 @@
 
 #include "../components/memory.h"
 
+#define TEXT_FLAG ".TEXT"
+
 /**
  * Le um arquivo em formato de texto contendo código
  * Assembly do IAS e salva as instruções na memória.
