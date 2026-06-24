@@ -68,7 +68,7 @@ static int blank_str(char *string) {
 }
 
 
-void read_code_file(char *file_name, Memory memory, char **err) {
+void read_code_file(char *file_name, Memory memory, char **err, char **err_line) {
     FILE *file;
     char line[MAX_LINE_SIZE];
     BinaryWord inst1, inst2;
@@ -88,13 +88,13 @@ void read_code_file(char *file_name, Memory memory, char **err) {
             memory[write_address] = strtoll(line, NULL, 10);
             write_address++;
         } else if (!blank_str(line)) {
-            *err = "ERRO DE DADOS! Apenas dados são permitidos na seção de dados!\n";
+            *err = "ERRO DE DADOS! Apenas dados são permitidos na seção de dados!";
         }
             
-        if (reading_data) valid_line = read_next_line(line, file);
+        if (reading_data && *err == NULL) valid_line = read_next_line(line, file);
 
         if (write_address >= INSTRUCTIONS_ADDRESS) {
-            *err = "ERRO DE DADOS! Limite de dados de entrada excedido!\n";
+            *err = "ERRO DE DADOS! Limite de dados de entrada excedido!";
         }
     }
 
@@ -129,4 +129,7 @@ void read_code_file(char *file_name, Memory memory, char **err) {
             write_address++;
         }
     }
+
+    if (*err != NULL) *err_line = line;
+    else *err = NULL;
 }

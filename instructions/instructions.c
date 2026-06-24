@@ -83,7 +83,7 @@ BinaryWord encode_instruction(char *instruction, char **err) {
     }
 
     if (i >= tot_instructions) {
-        *err = "ERRO DE SINTAXE! Instrução desconhecida!\n";
+        *err = "ERRO DE SINTAXE! Instrução desconhecida!";
     }
 
     // Verifica endereço
@@ -97,7 +97,7 @@ BinaryWord encode_instruction(char *instruction, char **err) {
                 encoded = instructions[i].opcode << ADDRESS_SIZE;
 
             } else {
-                *err = "ERRO DE SINTAXE! Campo de endereço não encontrado!\n";
+                *err = "ERRO DE SINTAXE! Campo de endereço não encontrado!";
                 finish_enconding = 1;
             }
 
@@ -116,7 +116,7 @@ BinaryWord encode_instruction(char *instruction, char **err) {
                     address = strtoll(read_buffer, &read_buffer, 10);
 
                     if (address < 0 || address > MAX_MEMORY_SIZE - 1) {
-                        *err = "ERRO DE ACESSO A MEMÓRIA! Acesso a indice inválido da memória!\n";
+                        *err = "ERRO DE ACESSO A MEMÓRIA! Acesso a indice inválido da memória!";
                         finish_enconding = 1;
 
                     } else if (strstr(read_buffer, addr_sufix) == read_buffer && *(read_buffer + strlen(addr_sufix)) == '\0') {
@@ -130,7 +130,7 @@ BinaryWord encode_instruction(char *instruction, char **err) {
     }
     
     if (encoded == EMPTY_WORD && *err == NULL) {
-        *err = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!\n";
+        *err = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!";
     }
     
     free(instr_token);
