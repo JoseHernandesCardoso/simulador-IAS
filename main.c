@@ -17,13 +17,13 @@ void main() {
     }
     printf("Memória alocada com sucesso!\n\n");
     
-
-    
+    printf("Lendo código do arquivo...\n");
     read_code_file("teste.txt", mem, &error_msg, &error_line);
-    if (error_msg != NULL) printf("%s\nLINHA: %s\n\n", error_msg, error_line);
-    
-    int i = INSTRUCTIONS_ADDRESS;
-
-    for (int j=DATA_ADDRESS; j < 150; j++) printf("%lld ", mem[j]);
-    putchar('\n');
+    if (error_msg != NULL) {
+        printf("%s\n", error_msg);
+        if (error_line != NULL) printf("LINHA: %s\n", error_line);
+        putchar('\n');
+        return;
+    }
+    printf("Arquivo de código lido com sucesso!\n\n");
 }
