@@ -21,7 +21,12 @@ void main() {
     read_code_file("teste.txt", mem, &error_msg, &error_line);
     if (error_msg != NULL) {
         printf("%s\n", error_msg);
-        if (error_line != NULL) printf("LINHA: %s\n", error_line);
+        printf("%s\n", error_line);
+        if (error_line != NULL) {
+            printf("LINHA: %s\n", error_line);
+            free(error_line);
+            error_line = NULL;
+        }
         putchar('\n');
         return;
     }
