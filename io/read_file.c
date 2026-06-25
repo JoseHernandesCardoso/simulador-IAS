@@ -15,7 +15,7 @@
  * Caso contrário, retorna 0.
  */
 static int read_next_line(char *output, FILE *file) {
-    int success;
+    int success = 0;
     if (fgets(output, MAX_LINE_SIZE, file) != NULL) {
         output[strcspn(output, "\n")] = '\0';
         output[strcspn(output, "#")] = '\0';
@@ -62,6 +62,7 @@ static int blank_str(char *string) {
         } else if (string[i] != ' ') {
             is_blank = 0;
         }
+        i++;
     }
     return is_blank;
     
@@ -102,9 +103,11 @@ void read_code_file(char *file_name, Memory memory, char **err, char **err_line)
     // Lê instruções
     write_address = INSTRUCTIONS_ADDRESS;
     while (!feof(file) && write_address < MAX_MEMORY_SIZE && *err == NULL) {
+        inst1 = EMPTY_WORD;
+        inst2 = EMPTY_WORD;
         valid_line = 0;
         while (!feof(file) && !valid_line) {
-            if (read_next_line(line, file)) {
+            if (read_next_line(line, file) && !blank_str(line)) {
                 valid_line = 1;
             }
         };
@@ -116,7 +119,7 @@ void read_code_file(char *file_name, Memory memory, char **err, char **err_line)
         if (*err == NULL) {
             valid_line = 0;
             while (!feof(file) && !valid_line) {
-                if (read_next_line(line, file)) {
+                if (read_next_line(line, file) && !blank_str(line)) {
                     valid_line = 1;
                 }
             };
