@@ -8,6 +8,7 @@ void main() {
     RegistrarsBank reg_bank;
     char *error_msg, *error_line;
 
+    // TODO: Criar funções melhores de exibição em IO
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
     printf("           MEG6: SIMULADOR DO IAS           \n");
     printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
@@ -24,6 +25,8 @@ void main() {
     reg_bank = initialize_registrars();
     if (reg_bank == NULL) {
         printf("ERRO DE ALOCAÇÃO DE MEMÓRIA! PROVAVELMENTE RAM INSUFICIENTE.\nEncerrando programa");
+        // Achar solução melhor para parada de emergência
+        free(mem);
         return;
     }
     printf("Registradores inicializados com sucesso!\n\n");
@@ -37,12 +40,16 @@ void main() {
         if (error_line != NULL) {
             printf("LINHA: %s\n", error_line);
             free(error_line);
-            error_line = NULL;
         }
         putchar('\n');
+        // Achar solução melhor para parada de emergência
+        free(mem);
+        free(reg_bank);
         return;
     }
     printf("Arquivo de código lido com sucesso!\n\n");
+
+
 
     // TODO: REVISAR DINÂMICA DE ENCERRAMENTO DO CÓDIGO EM CASO DE FALHA
     free(mem);
