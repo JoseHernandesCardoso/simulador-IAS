@@ -130,6 +130,7 @@ void read_code_file(char *file_name, Memory memory, char **err, char **err_line)
         }
     }
 
+    fclose(file);
 
     if (*err != NULL) {
         *err_line = malloc(sizeof(line));
