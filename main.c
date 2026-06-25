@@ -1,5 +1,6 @@
 #include "./components/memory.h"
 #include "./components/cpu/registrars.h"
+#include "./components/cpu/controll_unit.h"
 #include "./io/read_file.h"
 #include <stdio.h>
 
@@ -49,7 +50,15 @@ void main() {
     }
     printf("Arquivo de código lido com sucesso!\n\n");
 
-
+    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+    printf("INICIANDO EXECUÇÃO:\n");
+    fetch_cycle(reg_bank, mem);
+    while (reg_bank->IR != EMPTY_WORD) {
+        execute_cycle(reg_bank, mem);
+        printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        fetch_cycle(reg_bank, mem);
+    }
+    printf("Execução finalizada!\n");
 
     // TODO: REVISAR DINÂMICA DE ENCERRAMENTO DO CÓDIGO EM CASO DE FALHA
     free(mem);
