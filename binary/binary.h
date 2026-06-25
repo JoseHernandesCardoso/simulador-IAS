@@ -23,6 +23,6 @@ typedef unsigned long long BinaryWord;
  * @param start Inicio do intervalo
  * @param end Fim do intervalo
  */
-BinaryWord slice(BinaryWord word, int start, int end);
+BinaryWord slice(BinaryWord word, int start, int end, int word_size);
 
 #endif
