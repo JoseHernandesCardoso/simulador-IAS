@@ -14,7 +14,7 @@ static InstructionData instructions[] = {
     {"LOAD", 9ULL, 1, "MQ,M(", ")"},
     {"LOAD", 10ULL, 1, "MQ", NULL},
     {"STOR", 18ULL, 1, "M(", ",8:19)"},
-    {"STOR", 19ULL, 1, "M(", ",20:39)"},
+    {"STOR", 19ULL, 1, "M(", ",28:39)"},
     {"STOR", 33ULL, 1, "M(", ")"},
     {"JUMP", 13ULL, 1, "M(", ",0:19)"},
     {"JUMP", 14ULL, 1, "M(", ",20:39)"},
@@ -129,6 +129,10 @@ BinaryWord encode_instruction(char *instruction, char **err) {
         i++;
     }
     
+    if (encoded == EMPTY_WORD && *err == NULL) {
+        *err = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!\n";
+    }
+
     free(instr_token);
     return encoded;
 }
