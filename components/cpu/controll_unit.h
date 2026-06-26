@@ -20,7 +20,7 @@ void fetch_cycle(RegistrarsBank reg_bank, Memory mem);
 /**
  * Realiza o ciclo de execução da instrução no IR do banco de registradores.
  * 
- * Exibe na tela as movimentações de dados.
+ * Exibe na tela a instrução executada e as movimentações de dados.
  * 
  * @param reg_bank Banco de registradores do sistema.
  * @param mem Memória principal do sistema.

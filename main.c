@@ -50,15 +50,26 @@ void main() {
     }
     printf("Arquivo de código lido com sucesso!\n\n");
 
-    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
     printf("INICIANDO EXECUÇÃO:\n");
-    fetch_cycle(reg_bank, mem);
-    while (reg_bank->IR != EMPTY_WORD) {
-        execute_cycle(reg_bank, mem);
+    do {
         printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        printf("BUSCANDO PRÓXIMA INSTRUÇÃO...\n");
         fetch_cycle(reg_bank, mem);
-    }
+        putchar('\n');
+        if (reg_bank->IR != EMPTY_WORD) {
+            printf("EXECUTANDO ");
+            execute_cycle(reg_bank, mem);
+        }
+    } while (reg_bank->IR != EMPTY_WORD);
     printf("Execução finalizada!\n");
+
+    for (int i=0; i < INSTRUCTIONS_ADDRESS; i++) {
+        printf("%5lld ", mem[i]);
+        if ((i+1) % 10 == 0) {
+            putchar('\n');
+        }
+    }
+    putchar('\n');
 
     // TODO: REVISAR DINÂMICA DE ENCERRAMENTO DO CÓDIGO EM CASO DE FALHA
     free(mem);

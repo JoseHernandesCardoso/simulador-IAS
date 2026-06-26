@@ -6,6 +6,8 @@
 #define WORD_MASK ((1ULL << 40) - 1)
 #define WORD_SIZE 40
 
+#define INST_ADDR_MASK ((1ULL << 12) - 1)
+
 
 /**
  * Uma palavra binária com até 40 bits de tamanho.
