@@ -129,10 +129,6 @@ BinaryWord encode_instruction(char *instruction, char **err) {
         i++;
     }
     
-    if (encoded == EMPTY_WORD && *err == NULL) {
-        *err = "ERRO DE SINTAXE! Campo de endereço inválido para a instrução!";
-    }
-    
     free(instr_token);
     return encoded;
 }
