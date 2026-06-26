@@ -88,10 +88,19 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
 
         case 18: // STOR M(X,8:19)
             printf("STOR M(%lld,8:19)\n", reg_bank->MAR);
+            printf("M[%lld](8:19) <- PC(27:39)\n", reg_bank->MAR);
+            mem[reg_bank->MAR] &= ~(INST_ADDR_MASK << 20);
+            mem[reg_bank->MAR] |= slice(reg_bank->AC, 27, 39, 40) << 20;
             break;
 
-        case 19: // STOR M(X,20:39)
-            printf("STOR M(%lld,20:39)\n", reg_bank->MAR);
+        case 19: // STOR M(X,28:39)
+            printf("STOR M(%lld,28:39)\n", reg_bank->MAR);
+            printf("M[%lld](28:39) <- PC(27:39)\n", reg_bank->MAR);
+            printf("%lld\n", mem[reg_bank->MAR]);
+            mem[reg_bank->MAR] &= ~INST_ADDR_MASK;
+            printf("%lld\n", mem[reg_bank->MAR]);
+            mem[reg_bank->MAR] |= slice(reg_bank->AC, 27, 39, 40);
+            printf("%lld\n", mem[reg_bank->MAR]);
             break;
 
         case 33: // STOR M(X)
