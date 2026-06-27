@@ -155,6 +155,8 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
                 reg_bank->PC = reg_bank->MAR;
                 next_instruction_IBR = 0;
                 printf("PC <- MAR [%lld]\n", reg_bank->PC);
+            } else {
+                printf("PC < 0, não salta!\n");
             }
             break;
 
@@ -165,6 +167,8 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
                 reg_bank->PC = reg_bank->MAR;
                 next_instruction_IBR = 0;
                 printf("PC <- MAR [%lld]\n", reg_bank->PC);
+            } else {
+                printf("PC < 0, não salta!\n");
             }
             break;
         
