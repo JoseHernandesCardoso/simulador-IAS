@@ -131,7 +131,6 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
 
         case 16: // JUMP+ M(X,20:39)
             printf("JUMP+ M(%lld,20:39)\n", reg_bank->MAR);
-            printf("%lld\n", reg_bank->PC);
             if (reg_bank->AC >= 0) {
                 printf("PC <- MAR\n");
                 reg_bank->PC = reg_bank->MAR;
