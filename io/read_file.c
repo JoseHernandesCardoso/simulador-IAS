@@ -6,7 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#define MAX_LINE_SIZE 64
+#define MAX_LINE_SIZE 128
 
 /**
  * Lê a próxima linha do arquivo de instruções.

@@ -233,6 +233,7 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
 
             buffer = (BinaryWord)reg_bank->AC;
             buffer <<= 1;
+            buffer &= WORD_MASK;
             reg_bank->AC = (SignedBinaryWord)buffer;
             printf("AC <- AC << [%lld]\n", reg_bank->AC);
             break;
@@ -242,6 +243,7 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
 
             buffer = (BinaryWord)reg_bank->AC;
             buffer >>= 1;
+            buffer &= WORD_MASK;
             reg_bank->AC = (SignedBinaryWord)buffer;
             printf("AC <- AC >> [%lld]\n", reg_bank->AC);
             break;
