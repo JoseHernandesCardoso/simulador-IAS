@@ -82,14 +82,14 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 3: // LOAD |M(X)|
             printf("LOAD |M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC = (SignedBinaryWord)abs(mem[reg_bank->MAR]);
+            reg_bank->AC = llabs((SignedBinaryWord)mem[reg_bank->MAR]);
             printf("AC <- |M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 4: // LOAD -|M(X)|
             printf("LOAD -|M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC = (SignedBinaryWord)(-abs(mem[reg_bank->MAR]));
+            reg_bank->AC = -llabs((SignedBinaryWord)mem[reg_bank->MAR]);
             printf("AC <- -|M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
@@ -184,7 +184,7 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 7: // ADD |M(X)|
             printf("|ADD M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC += (SignedBinaryWord)abs(mem[reg_bank->MAR]);
+            reg_bank->AC += llabs((SignedBinaryWord)mem[reg_bank->MAR]);
             printf("AC <- AC + |M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
@@ -198,7 +198,7 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 8: // SUB |M(X)|
             printf("SUB |M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC -= (SignedBinaryWord)abs(mem[reg_bank->MAR]);
+            reg_bank->AC -= llabs((SignedBinaryWord)mem[reg_bank->MAR]);
             printf("AC <- AC - |M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
         
