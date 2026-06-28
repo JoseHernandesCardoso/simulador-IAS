@@ -44,7 +44,7 @@ static void cpy_until_number(char *string, char **out) {
         *out = NULL;
     }
     else {
-        *out = calloc(sizeof(char), sizeof(string));
+        *out = calloc(sizeof(char), sizeof(*string));
         len = strlen(string);
         finish = 0; i = 0;
 
@@ -67,7 +67,7 @@ BinaryWord encode_instruction(char *instruction, char **err) {
 
     tot_instructions = sizeof(instructions) / sizeof(InstructionData);
 
-    instr_token = malloc(sizeof(instruction));
+    instr_token = malloc(sizeof(*instruction));
     strcpy(instr_token, instruction);
     mnem_token = strtok(instr_token, " ");
     addr_token = strtok(NULL, " ");
