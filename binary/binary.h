@@ -15,6 +15,12 @@
 typedef unsigned long long BinaryWord;
 
 /**
+ * Uma palavra binária com até 40 bits com sinal.
+ * Usado para dados.
+ */
+typedef long long SignedBinaryWord;
+
+/**
  * Faz o fatiamento de uma palavra binária e retorna
  * apenas os bits do intervalo dado.
  * 

@@ -68,35 +68,35 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 1: // LOAD M(X)
             printf("LOAD M(%lld)\n", reg_bank->MAR);
 
-            reg_bank->AC = mem[reg_bank->MAR];
+            reg_bank->AC = (SignedBinaryWord)mem[reg_bank->MAR];
             printf("AC <- M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 2: // LOAD -M(X)
             printf("LOAD -M(%lld)\n", reg_bank->MAR);
 
-            reg_bank->AC = -mem[reg_bank->MAR];
+            reg_bank->AC = (SignedBinaryWord)(-mem[reg_bank->MAR]);
             printf("AC <- -M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 3: // LOAD |M(X)|
             printf("LOAD |M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC = abs(mem[reg_bank->MAR]);
+            reg_bank->AC = (SignedBinaryWord)abs(mem[reg_bank->MAR]);
             printf("AC <- |M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 4: // LOAD -|M(X)|
             printf("LOAD -|M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC = -abs(mem[reg_bank->MAR]);
+            reg_bank->AC = (SignedBinaryWord)(-abs(mem[reg_bank->MAR]));
             printf("AC <- -|M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 9: // LOAD MQ,M(X)
             printf("LOAD MQ,M(%lld)\n", reg_bank->MAR);
 
-            reg_bank->MQ = mem[reg_bank->MAR];
+            reg_bank->MQ = (SignedBinaryWord)mem[reg_bank->MAR];
             printf("MQ <- M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->MQ);
             break;
 
@@ -110,25 +110,27 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 18: // STOR M(X,8:19)
             printf("STOR M(%lld,8:19)\n", reg_bank->MAR);
 
-            buffer = slice(reg_bank->AC, 27, 39, 40);
-            mem[reg_bank->MAR] &= ~(INST_ADDR_MASK << 20);
-            mem[reg_bank->MAR] |= buffer << 20;
+            buffer = (BinaryWord)reg_bank->AC;
+            buffer = slice(buffer, 27, 39, 40);
+            mem[reg_bank->MAR] &= ~(INST_ADDR_MASK << 20); // Limpa endereço
+            mem[reg_bank->MAR] |= buffer << 20; // Adiciona novo
             printf("M(%lld)(8:19) <- PC(27:39) [%lld]\n", reg_bank->MAR, buffer);
             break;
 
         case 19: // STOR M(X,28:39)
             printf("STOR M(%lld,28:39)\n", reg_bank->MAR);
 
-            buffer = slice(reg_bank->AC, 27, 39, 40);
-            mem[reg_bank->MAR] &= ~INST_ADDR_MASK;
-            mem[reg_bank->MAR] |= buffer;
+            buffer = (BinaryWord)reg_bank->AC;
+            buffer = slice(buffer, 27, 39, 40);
+            mem[reg_bank->MAR] &= ~INST_ADDR_MASK; // Limpa endereço
+            mem[reg_bank->MAR] |= buffer; // Adiciona novo
             printf("M(%lld)(28:39) <- PC(27:39) [%lld]\n", reg_bank->MAR, buffer);
             break;
 
         case 33: // STOR M(X)
             printf("STOR M(%lld)\n", reg_bank->MAR);
 
-            mem[reg_bank->MAR] = reg_bank->AC;
+            mem[reg_bank->MAR] = (BinaryWord)reg_bank->AC;
             printf("M(%lld) <- AC [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
@@ -175,28 +177,28 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 5: // ADD M(X)
             printf("ADD M(%lld)\n", reg_bank->MAR);
 
-            reg_bank->AC += mem[reg_bank->MAR];
+            reg_bank->AC += (SignedBinaryWord)mem[reg_bank->MAR];
             printf("AC <- AC + M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
         
         case 7: // ADD |M(X)|
             printf("|ADD M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC += abs(mem[reg_bank->MAR]);
+            reg_bank->AC += (SignedBinaryWord)abs(mem[reg_bank->MAR]);
             printf("AC <- AC + |M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 6: // SUB M(X)
             printf("SUB M(%lld)\n", reg_bank->MAR);
 
-            reg_bank->AC -= mem[reg_bank->MAR];
+            reg_bank->AC -= (SignedBinaryWord)mem[reg_bank->MAR];
             printf("AC <- AC - M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
 
         case 8: // SUB |M(X)|
             printf("SUB |M(%lld)|\n", reg_bank->MAR);
 
-            reg_bank->AC -= abs(mem[reg_bank->MAR]);
+            reg_bank->AC -= (SignedBinaryWord)abs(mem[reg_bank->MAR]);
             printf("AC <- AC - |M(%lld)| [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
         
@@ -204,14 +206,14 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
             printf("MUL M(%lld)\n", reg_bank->MAR);
 
             // Algoritmo da multiplicação binária
-            reg_bank->AC = 0ULL;
+            reg_bank->AC = 0LL;
             for (int i=0; i < 40; i++) {
-                if ((reg_bank->MQ & 1ULL) == 1) {
-                    reg_bank->AC += mem[reg_bank->MAR];
+                if ((reg_bank->MQ & 1LL) == 1) {
+                    reg_bank->AC += (SignedBinaryWord)mem[reg_bank->MAR];
                 }
                 // Deslocamento do par AC MQ para a direita
                 reg_bank->MQ >>= 1;
-                reg_bank->MQ |= (reg_bank->AC & 1ULL) << 39;
+                reg_bank->MQ |= (reg_bank->AC & 1LL) << 39;
                 reg_bank->AC >>= 1;
             }
             printf("AC,MQ <- MQ * M(%lld) [%lld | %lld]\n", reg_bank->MAR, reg_bank->AC, reg_bank->MQ);
@@ -220,8 +222,8 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 12: // DIV M(X)
             printf("DIV M(%lld)\n", reg_bank->MAR);
 
-            reg_bank->MQ = reg_bank->AC / mem[reg_bank->MAR];
-            reg_bank->AC = reg_bank->AC % mem[reg_bank->MAR];
+            reg_bank->MQ = reg_bank->AC / ((SignedBinaryWord)mem[reg_bank->MAR]);
+            reg_bank->AC = reg_bank->AC % ((SignedBinaryWord)mem[reg_bank->MAR]);
             printf("MQ <- AC / M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->MQ);
             printf("AC <- AC %% M(%lld) [%lld]\n", reg_bank->MAR, reg_bank->AC);
             break;
@@ -229,14 +231,18 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 20: // LSH
             printf("LSH\n");
 
-            reg_bank->AC <<= 1;
+            buffer = (BinaryWord)reg_bank->AC;
+            buffer <<= 1;
+            reg_bank->AC = (SignedBinaryWord)buffer;
             printf("AC <- AC << [%lld]\n", reg_bank->AC);
             break;
 
         case 21: // RSH
             printf("RSH\n");
 
-            reg_bank->AC >>= 1;
+            buffer = (BinaryWord)reg_bank->AC;
+            buffer >>= 1;
+            reg_bank->AC = (SignedBinaryWord)buffer;
             printf("AC <- AC >> [%lld]\n", reg_bank->AC);
             break;
 

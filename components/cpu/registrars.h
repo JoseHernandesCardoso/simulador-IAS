@@ -4,9 +4,11 @@
 #define REGISTRARS_H
 
 typedef BinaryWord Registrar;
+typedef SignedBinaryWord DataRegistrar;
 
 typedef struct RegBank{
-    Registrar MBR, AC, MQ; // 40 bits
+    Registrar MBR;         // 40 bits
+    DataRegistrar AC, MQ;  // 40 bits
     Registrar IBR;         // 20 bits
     Registrar MAR, PC;     // 12 bits
     Registrar IR;          // 8 bits
