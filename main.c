@@ -9,6 +9,7 @@ void main() {
     Memory mem;
     RegistrarsBank reg_bank;
     char *file_name, *error_msg, *error_line;
+    char step_execution;
 
     print_line(50);
     centered_print("MEG6: SIMULADOR DO IAS", 50);
@@ -26,7 +27,6 @@ void main() {
     reg_bank = initialize_registrars();
     if (reg_bank == NULL) {
         printf("ERRO DE ALOCAÇÃO DE MEMÓRIA! PROVAVELMENTE RAM INSUFICIENTE.\nEncerrando programa");
-        // Achar solução melhor para parada de emergência
         free(mem);
         return;
     }
@@ -34,6 +34,7 @@ void main() {
 
     printf("Insira o nome do arquivo de código: ");
     scanf("%s", file_name);
+    clear_buffer();
 
     printf("Lendo código do arquivo...\n");
     read_code_file(file_name, mem, &error_msg, &error_line);
@@ -44,12 +45,16 @@ void main() {
             free(error_line);
         }
         putchar('\n');
-        // Achar solução melhor para parada de emergência
         free(mem);
         free(reg_bank);
         return;
     }
     printf("Arquivo de código lido com sucesso!\n\n");
+
+    printf("Digite \"p\" para realizar a execução passo a passo: ");
+    scanf("%c", &step_execution);
+    clear_buffer();
+    putchar('\n');
 
     printf("INICIANDO EXECUÇÃO:\n");
     do {
@@ -57,12 +62,15 @@ void main() {
         printf("BUSCANDO PRÓXIMA INSTRUÇÃO...\n");
         fetch_cycle(reg_bank, mem);
         putchar('\n');
+
         if (reg_bank->IR != EMPTY_WORD) {
             printf("EXECUTANDO ");
             execute_cycle(reg_bank, mem);
+            if (step_execution == 'p') wait_user_response();
         } else {
             printf("NÃO HÁ MAIS INSTRUÇÕES!\n");
         }
+
     } while (reg_bank->IR != EMPTY_WORD);
     print_line(50);
     printf("Execução finalizada!\n\n");
@@ -76,7 +84,6 @@ void main() {
     }
     putchar('\n');
 
-    // TODO: REVISAR DINÂMICA DE ENCERRAMENTO DO CÓDIGO EM CASO DE FALHA
     free(mem);
     free(reg_bank);
 }

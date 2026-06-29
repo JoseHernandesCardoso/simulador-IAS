@@ -20,4 +20,14 @@ void print_line(int size);
  */
 void centered_print(char *msg, int line_size);
 
+/**
+ * Limpa buffer de entrada do teclado.
+ */
+void clear_buffer();
+
+/**
+ * Pausa a execução do programa até que o usuário pressione ENTER.
+ */
+void wait_user_response();
+
 #endif

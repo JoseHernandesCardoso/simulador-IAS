@@ -21,3 +21,12 @@ void centered_print(char *msg, int line_size) {
     };
     printf("%s\n", msg);
 }
+
+void clear_buffer() {
+    char c;
+    while ((c = fgetc(stdin)) != '\n' && c != EOF);
+}
+
+void wait_user_response() {
+    while (getchar() != '\n');
+}
