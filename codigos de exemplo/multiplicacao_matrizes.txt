@@ -1,0 +1,160 @@
+# MULTIPLICAÇÂO DE MATRIZES
+
+4 # Colunas matriz 1 e Linhas matriz 2 (n)
+3 # Linhas matriz 1
+2 # Colunas matriz 2
+
+# Espaços para os indices i, j, k
+0
+0
+0
+
+# Constantes
+0
+1
+
+11 # inicio da matriz 1
+23 # inicio da matriz 2
+31 # inicio da matriz resposta
+
+# MATRIZ 1
+# linha 1
+4
+2
+11
+6
+# linha 2
+0
+3
+2
+7
+# linha 3
+6
+1
+4
+8
+
+# MATRIZ 2
+# linha 1
+8
+3
+# linha 2
+2
+9
+# linha 3
+5
+3
+# linha 4
+4
+3
+
+# MATRIZ RESPOSTA
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+
+# Resultado esperado:
+# 115 81
+#  44 54
+# 102 63
+
+
+.TEXT
+# Inicio loop for i
+
+# Reinicia j para 0
+LOAD M(6)
+STOR M(4)
+
+# Inicio loop for j
+
+# Reinicia k para 0
+LOAD M(6)
+STOR M(5)
+
+# Inicio loop for k
+
+# Define endereço de matrizResposta[i][j] para saida
+# Encontra linha
+LOAD MQ,M(3)
+MUL M(2)
+LOAD MQ
+# Encontra elemento na linha
+ADD M(4)
+# Soma com o endereço de inicio
+ADD M(10)
+# Define endereço na soma e saida
+STOR M(113,8:19) # *
+STOR M(113,28:39) # **
+
+# Define endereço de matriz1[i][k] para carregar em MQ 
+# Encontra linha
+LOAD MQ,M(3)
+MUL M(0)
+LOAD MQ
+# Encontra elemento na linha
+ADD M(5)
+# Soma com o endereço de inicio
+ADD M(8)
+# Define endereço pra carregar no MQ
+STOR M(111,28:39) # ***
+
+# Define endereço de matriz2[k][j] para multipilcar
+# Encontra linha
+LOAD MQ,M(5)
+MUL M(2)
+LOAD MQ
+# Encontra elemento na linha
+ADD M(4)
+# Soma com o endereço de inicio
+ADD M(9)
+# Define endereço na multiplicação
+STOR M(112,8:19) # ****
+
+# matrizResposta [i][j] += matriz1[i][k] * matriz2[k][j]
+LOAD MQ,M(0) # ***
+MUL M(0) # ****
+LOAD MQ
+ADD M(0) # *
+STOR M(0) # **
+
+
+# Incrementa k
+LOAD M(5)
+ADD M(7)
+STOR M(5)
+
+# Se k < n volta pro inicio do loop
+LOAD M(0)
+SUB M(5)
+SUB M(7)
+JUMP+ M(102,0:19)
+
+# Incrementa j
+LOAD M(4)
+ADD M(7)
+STOR M(4)
+
+# Se j < colunas2 volta pro inicio do loop
+LOAD M(2)
+SUB M(4)
+SUB M(7)
+JUMP+ M(101,0:19)
+
+# Incrementa i
+LOAD M(3)
+ADD M(7)
+STOR M(3)
+
+# Se i < linha1 volta pro inicio do loop
+LOAD M(1)
+SUB M(3)
+SUB M(7)
+JUMP+ M(100,0:19)
