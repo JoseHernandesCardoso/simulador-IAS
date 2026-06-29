@@ -1,6 +1,5 @@
 # EXEMPLO SHIFTS
 1
--1
 
 
 .TEXT

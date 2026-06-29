@@ -2,7 +2,7 @@
 
 6  # Tamanho dos vetores
 0  # Contador i
-1  # Constante 1
+1  # Constante
 
 5  # Inicio dos vetores de entrada
 30 # Posição do vetor se saida
