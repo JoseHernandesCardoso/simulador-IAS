@@ -231,20 +231,16 @@ void execute_cycle(RegistrarsBank reg_bank, Memory mem) {
         case 20: // LSH
             printf("LSH\n");
 
-            buffer = (BinaryWord)reg_bank->AC;
-            buffer <<= 1;
-            buffer &= WORD_MASK;
-            reg_bank->AC = (SignedBinaryWord)buffer;
+            reg_bank->AC <<= 1;
+            reg_bank->AC &= WORD_MASK;
             printf("AC <- AC << [%lld]\n", reg_bank->AC);
             break;
 
         case 21: // RSH
             printf("RSH\n");
 
-            buffer = (BinaryWord)reg_bank->AC;
-            buffer >>= 1;
-            buffer &= WORD_MASK;
-            reg_bank->AC = (SignedBinaryWord)buffer;
+            reg_bank->AC >>= 1;
+            reg_bank->AC &= WORD_MASK;
             printf("AC <- AC >> [%lld]\n", reg_bank->AC);
             break;
 
