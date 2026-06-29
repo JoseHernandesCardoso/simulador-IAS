@@ -1,0 +1,22 @@
+# EXEMPLO SHIFTS
+1
+-1
+
+
+.TEXT
+# Com positivo
+LOAD M(0)
+LSH
+STOR M(10) # 2
+LSH
+STOR M(11) # 4
+RSH
+STOR M(12) # 2
+RSH
+STOR M(13) # 1
+RSH
+STOR M(14) # 0
+LSH
+STOR M(15) # 0
+
+# Shifts são operações lógicas, logo não servem para números negativos

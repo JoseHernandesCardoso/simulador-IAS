@@ -81,8 +81,14 @@ void read_code_file(char *file_name, Memory memory, char **err, char **err_line)
     int valid_line, reading_data;
     int write_address = DATA_ADDRESS;
 
-    file = fopen(file_name, "r");
     *err = NULL;
+
+    file = fopen(file_name, "r");
+    if (file == NULL) {
+        *err = "ERRO! Arquivo não encontrado!";
+        *err_line = NULL;
+        return;
+    }
 
     // Lê Dados
     reading_data = 1;

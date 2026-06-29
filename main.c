@@ -8,7 +8,7 @@
 void main() {
     Memory mem;
     RegistrarsBank reg_bank;
-    char *error_msg, *error_line;
+    char *file_name, *error_msg, *error_line;
 
     print_line(50);
     centered_print("MEG6: SIMULADOR DO IAS", 50);
@@ -33,9 +33,11 @@ void main() {
     printf("Registradores inicializados com sucesso!\n\n");
 
     // TODO: ADICIONAR INSERÇÃO DO NOME DO ARQUIVO PELO USUÁRIO
+    printf("Insira o nome do arquivo de código: ");
+    scanf("%s", file_name);
 
     printf("Lendo código do arquivo...\n");
-    read_code_file("teste.txt", mem, &error_msg, &error_line);
+    read_code_file(file_name, mem, &error_msg, &error_line);
     if (error_msg != NULL) {
         printf("%s\n", error_msg);
         if (error_line != NULL) {

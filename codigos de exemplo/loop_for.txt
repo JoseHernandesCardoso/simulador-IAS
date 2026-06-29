@@ -1,0 +1,26 @@
+# LOOP FOR PREENCHENDO VETOR
+
+0  # Valor inicial da variavel de incremento i
+10 # valor fim
+1  # Valor de incremento
+
+20 # Inicio do vetor
+
+
+.TEXT
+
+LOAD M(3) # Carrega inicio do vetor
+ADD M(0)  # Soma inicio com i
+
+# Guarda valor de i na posição calculada anteriormente
+STOR M(102,8:19)
+LOAD M(0)
+STOR M(0) # 0 é apenas um placeholder que será alterado pelo STOR anterior
+
+ADD M(2) # Incrementa i
+STOR M(0)
+
+# Verifica se deve voltar para o inicio do loop
+LOAD M(1)
+SUB M(0)
+JUMP+ M(100,0:19)

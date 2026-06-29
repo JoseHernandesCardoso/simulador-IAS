@@ -1,0 +1,68 @@
+# EXEMPLO DE OPERAÇÕES ARITMÉTICAS
+
+# Dados
+-1
+2
+3
+8
+-2
+
+.TEXT
+
+LOAD M(0)
+ADD M(1)
+STOR M(10) # 1
+
+LOAD |M(0)|
+ADD M(1)
+STOR M(11) # 3
+
+LOAD -|M(0)|
+ADD M(1)
+STOR M(12) # 1
+
+LOAD M(1)
+SUB |M(0)|
+STOR M(13) # 1
+
+LOAD MQ,M(3)
+MUL M(2)
+LOAD MQ
+STOR M(14) # 24
+
+# Multiplicando valor negativo com positivo
+LOAD |M(4)| # Carrega módulo do valor negativo
+STOR M(15) # Salva em um buffer
+LOAD MQ,M(3)
+MUL M(15) # Multiplica pelo valor em módulo
+LOAD MQ
+STOR M(15) # Salva resposta em buffer
+LOAD -M(15) # Carrega aplicando negativo
+STOR M(15) # -16
+
+# Multiplicando valor negativo com negativo
+LOAD |M(0)| # Carrega módulo do primeiro
+STOR M(16) # Salva em um buffer
+LOAD MQ,M(16)
+LOAD |M(4)| # Carrega módulo do segundo
+STOR M(16) # Salva em buffer
+MUL M(16) # Multiplica os valores
+LOAD MQ
+STOR M(16) # 2
+
+LOAD M(3)
+DIV M(1)
+STOR M(17) # resto 0
+LOAD MQ
+STOR M(18) # quociente 4
+
+LOAD M(3)
+DIV M(2)
+STOR M(19) # resto 2
+LOAD MQ
+STOR M(20) # quociente 2
+
+LOAD M(3)
+DIV M(4)
+LOAD MQ
+STOR M(21) # quociente -4
