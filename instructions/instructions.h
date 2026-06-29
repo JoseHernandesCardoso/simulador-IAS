@@ -28,6 +28,10 @@ typedef struct {
  * Onde <PREFIX> e <SUFIX> variam com o opcode da instrução.
  * Retorna EMPTY_WORD e retorna mensagem de erro em ERR se INSTRUCTION for inválido.
  * Caso contrário, ERR retorna NULL.
+ * 
+ * @param instruction String da instrução.
+ * @param err Saida de erro.
+ * @return Instrução codificada.
  */
 BinaryWord encode_instruction(char *instruction, char **err);
 

@@ -1,6 +1,7 @@
 #include "./components/memory.h"
 #include "./components/cpu/registrars.h"
 #include "./components/cpu/controll_unit.h"
+#include "./io/io_stuff.h"
 #include "./io/read_file.h"
 #include <stdio.h>
 
@@ -9,10 +10,9 @@ void main() {
     RegistrarsBank reg_bank;
     char *error_msg, *error_line;
 
-    // TODO: Criar funções melhores de exibição em IO
-    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
-    printf("           MEG6: SIMULADOR DO IAS           \n");
-    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+    print_line(50);
+    centered_print("MEG6: SIMULADOR DO IAS", 50);
+    print_line(50);
 
     printf("Alocando memória virtual...\n");
     mem = alocate_memory();
@@ -52,17 +52,21 @@ void main() {
 
     printf("INICIANDO EXECUÇÃO:\n");
     do {
-        printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n");
+        print_line(50);
         printf("BUSCANDO PRÓXIMA INSTRUÇÃO...\n");
         fetch_cycle(reg_bank, mem);
         putchar('\n');
         if (reg_bank->IR != EMPTY_WORD) {
             printf("EXECUTANDO ");
             execute_cycle(reg_bank, mem);
+        } else {
+            printf("NÃO HÁ MAIS INSTRUÇÕES!\n");
         }
     } while (reg_bank->IR != EMPTY_WORD);
-    printf("Execução finalizada!\n");
+    print_line(50);
+    printf("Execução finalizada!\n\n");
 
+    printf("DADOS NA MEMÓRIA:\n\n");
     for (int i=0; i < INSTRUCTIONS_ADDRESS; i++) {
         printf("%5lld ", mem[i]);
         if ((i+1) % 10 == 0) {
