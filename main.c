@@ -32,7 +32,6 @@ void main() {
     }
     printf("Registradores inicializados com sucesso!\n\n");
 
-    // TODO: ADICIONAR INSERÇÃO DO NOME DO ARQUIVO PELO USUÁRIO
     printf("Insira o nome do arquivo de código: ");
     scanf("%s", file_name);
 
