@@ -27,18 +27,23 @@ static int read_next_line(char *output, FILE *file) {
 }
 
 /**
- * Verifica se a string é toda numérica.
+ * Verifica se a string é toda numérica ignorando espaços no final.
  * Retorna 1 se verdadeiro e 0 caso falso.
  */
 static int is_numeric(char *string) {
-    int i, is_num;
+    int i, is_num, reading_space;
 
     is_num = 0;
     if (string[0] == '-' || string[0] == '+' || isdigit(string[0])) {
         is_num = 1;
+        reading_space = 0;
         i = 1;
         while (is_num && string[i] != '\0') {
-            if (!isdigit(string[i])) is_num = 0;
+            if (string[i] == ' ') {
+                reading_space = 1;
+            } else if (!isdigit(string[i]) && !reading_space) {
+                is_num = 0;
+            }
             i++;
         }
     }
