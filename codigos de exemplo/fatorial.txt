@@ -1,0 +1,25 @@
+# CALCULO DE FATORIAL (resposta limitada a 40 bits de tamanho)
+
+10 # valor de n
+
+1 # Constante 1
+
+1 # resposta
+
+.TEXT
+# Calcula resposta * n
+LOAD MQ,M(0)
+MUL M(2)
+
+# Salva resultado em resposta
+LOAD MQ
+STOR M(2)
+
+# Decresce n
+LOAD M(0)
+SUB M(1)
+STOR M(0)
+
+# Volta pro inicio se n > 0
+SUB M(1)
+JUMP+ M(100,0:19)
