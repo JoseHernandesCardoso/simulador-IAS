@@ -1,6 +1,6 @@
-# SEQUÊNCIA DE FIBONACCI
+# CALCULA FIBONACCI
 
-10 # Quantidade de números da sequencia a serem exibidos
+7 # n-esimo número da sequênca
 
 0 # Contador
 
@@ -11,19 +11,21 @@
 1
 0
 
-10 # Inicio do vetor da sequência
+0 # Resultado
 
 .TEXT
-# Define local que o dado será escrito
-LOAD M(1)
-ADD M(6)
-
-# Escreve a na posição calculada
-STOR M(102,8:19)
+# Escreve resposta (valor de a)
 LOAD M(3)
-STOR M(0)
+STOR M(6)
 
-# Faz a avançar na sequencia
+# Se contador >= posição do número desejado, encerra execução
+LOAD M(1)
+SUB M(0)
+SUB M(2)
+JUMP+ M(999,0:19)
+
+# Faz a avançar na sequência
+LOAD M(3) # carrega a
 STOR M(5) # salva a em c
 ADD M(4)  # soma a com b
 STOR M(3) # salva a
@@ -35,7 +37,5 @@ LOAD M(1)
 ADD M(2)
 STOR M(1)
 
-# Volta pro inicio se contador < quantidade de números
-LOAD M(0)
-SUB M(1)
-JUMP+ M(100,0:19)
+# Volta pro inicio
+JUMP M(100,0:19)
