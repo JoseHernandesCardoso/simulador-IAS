@@ -1,0 +1,63 @@
+#mul matrizes e soma vetor
+
+# SOMA DE VETORES
+
+6  # Tamanho dos vetores
+0  # Contador i
+1  # Constante 1
+
+5  # Inicio dos vetores de entrada
+30 # Posição do vetor se saida
+
+# Vetor 1
+5
+2
+3
+8
+4
+9
+
+# Vetor 2
+6
+0
+12
+9
+2
+1
+
+# Saida esperada: 11 2 15 17 6 10
+
+.TEXT
+# Se vetores de tamanho 0 -> encerra execução
+# AC já é inicializado em 0
+SUB M(0)
+JUMP+ M(999,0:19)
+
+# Soma vetor1[i] + vetor2[i] e salva em vetorSaida[i]
+# Define endereços de vetor1[i] e vetor2[i]
+LOAD M(3)
+ADD M(1)
+STOR M(105,8:19) # *
+ADD M(0)  # Desloca para o vetor2
+STOR M(105,28:39) # **
+
+# Define endereço de vetorSaida[i]
+LOAD M(4)
+ADD M(1)
+STOR M(106,8:19) # ***
+
+LOAD M(0) # *Carrega vetor1[i]
+ADD M(0)  # **Soma com vetor2[i]
+STOR M(0) # ***Salva em vetorSaida[i]
+
+# Incrementa i
+LOAD M(1)
+ADD M(2)
+STOR M(1)
+
+# Se i < tamanho dos vetores -> volta pro incio da soma
+LOAD M(0)
+SUB M(1)
+SUB M(2)
+JUMP+ M(101,0:19)
+
