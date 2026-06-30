@@ -162,3 +162,8 @@ estão descritas no livro do Stallings citado anteriormente:
 | JUMP M(X,20:39)  | Próxima instrução a ser executada está à direita de M(X) |
 | JUMP+ M(X,0:19)  | Se o número em AC for não negativo, a próxima instrução a ser executada está à esquerda de M(X) |
 | JUMP+ M(X,20:39) | Se o número em AC for não negativo, a próxima instrução a ser executada está à direita de M(X) | |
+
+O simulador encerra a execução do programa automaticamente após ler um
+endereço de instrução sem instrução. Sendo assim, é possível forçar o
+fim da execução redirecionando o fluxo para um local de memória onde não
+foram carregadas instruções usando `JUMP` ou `JUMP+`.
