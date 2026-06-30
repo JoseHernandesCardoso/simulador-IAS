@@ -11,7 +11,7 @@ CFLAGS = -Wall -std=c17 \
 
 SRC = main.c \
       binary/binary.c \
-      components/cpu/controll_unit.c \
+      components/cpu/control_unit.c \
       components/cpu/registrars.c \
       components/memory.c \
       instructions/instructions.c \

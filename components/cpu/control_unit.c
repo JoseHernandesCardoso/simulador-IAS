@@ -1,4 +1,4 @@
-#include "controll_unit.h"
+#include "control_unit.h"
 #include <stdio.h>
 
 // bit de controle

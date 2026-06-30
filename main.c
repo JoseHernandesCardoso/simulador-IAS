@@ -1,6 +1,6 @@
 #include "./components/memory.h"
 #include "./components/cpu/registrars.h"
-#include "./components/cpu/controll_unit.h"
+#include "./components/cpu/control_unit.h"
 #include "./io/io_stuff.h"
 #include "./io/read_file.h"
 #include <stdio.h>
