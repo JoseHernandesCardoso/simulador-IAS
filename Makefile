@@ -2,7 +2,7 @@ CC = gcc
 
 TARGET = meg6
 
-CFLAGS = -Wall -std=c17 \
+CFLAGS = -std=c17 \
         -Ibinary \
         -Icomponents \
         -Icomponents/cpu \
