@@ -12,7 +12,7 @@ edição).
 
 ## Compilando o programa
 
-Após baixar os arquivos, pelo terminal, você pode acessar o diretório onde
+Após baixar os arquivos, você pode acessar, pelo terminal, o diretório onde
 eles estão e compila-los usando:
 
 ```bash
@@ -39,6 +39,14 @@ escolher executar o código direto (sem pausas) ou passo a passo (para a
 cada instrução executada e continua quando ENTER é pressionado).
 
 > OBS: O arquivo de código deve estar no mesmo diretório do programa.
+
+Durante a execução, a movimentação dos dados entre registradores e endereços de
+memória é exibida na tela, tanto do ciclo de busca, quanto do ciclo de execução.
+A movimentação exibida está no seguinte formato:
+
+```
+*destino* <- *origem* [*valor do dado*]
+```
 
 Ao final da execução, uma matriz 10x10 da área de dados será exibida,
 mostrando o estado final dos dados na memória. O primeiro elemento da
